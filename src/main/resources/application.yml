@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    streamapp:
+      security:
+        enabled: false
+    stream:
+      bindings:
+        output:
+          destination: foobar
+
+logging:
+  level:
+    com.github.wpik: debug
