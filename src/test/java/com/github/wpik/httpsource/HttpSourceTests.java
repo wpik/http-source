@@ -65,7 +65,29 @@ public abstract class HttpSourceTests {
             ResponseEntity<Map> response = this.restTemplate.getForEntity("/actuator/env", Map.class);
             assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         }
+    }
 
+
+    @TestPropertySource(properties = {
+            "http.uriPath = /foo",
+            "http.mappedRequestHeaders = f*"
+    })
+    public static class HeaderTests extends BaseTests {
+
+        @Test
+        public void headersAreMapped() throws Exception {
+            String json = "{\"foo\":1,\"bar\":true}";
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("foo", "bar");
+            RequestEntity<String> request = new RequestEntity<>(json, headers, HttpMethod.POST, new URI("/foo"));
+            ResponseEntity<?> response = restTemplate.exchange(request, Object.class);
+            assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+            Message<?> message = messageCollector.forChannel(channels.output()).poll(1, TimeUnit.SECONDS);
+            assertEquals(json, message.getPayload());
+            assertEquals(MediaType.APPLICATION_JSON, message.getHeaders().get(MessageHeaders.CONTENT_TYPE));
+            assertTrue(message.getHeaders().containsKey("foo"));
+        }
     }
 
 
