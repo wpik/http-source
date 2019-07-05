@@ -7,6 +7,11 @@ spring:
       bindings:
         output:
           destination: foobar
+      kafka:
+        bindings:
+          output:
+            producer:
+              sync: true
 
 logging:
   level:
