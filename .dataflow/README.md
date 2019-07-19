@@ -59,12 +59,24 @@ Below we will build, deploy and create simple stream that writes HTTP requests t
         stream create --definition "http-pro --port=8090 | file --directory=/tmp --name=http-requests" --name http-to-file
         ```
 
+    - using REST API
+    
+        ```bash
+        curl -X POST -d "name=http-to-file&definition=http-pro --port=8090 | file --directory=/tmp --name=http-requests" localhost:9393/streams/definitions?deploy=false
+        ```
+
 4. Validate stream
 
     - using shell
     
         ```bash
         stream validate --name http-to-file
+        ```
+        
+    - using REST API
+    
+        ```bash
+        curl 'http://localhost:9393/streams/validation/http-to-file' -i -X GET
         ```
 
 5. Deploy stream
@@ -75,6 +87,12 @@ Below we will build, deploy and create simple stream that writes HTTP requests t
         stream deploy --name http-to-file
         ```
 
+    - using REST API
+    
+        ```bash
+        curl 'http://localhost:9393/streams/deployments/http-to-file' -i -X POST
+        ```
+
 6. Get stream details
 
     - using shell
@@ -83,6 +101,12 @@ Below we will build, deploy and create simple stream that writes HTTP requests t
         stream info --name http-to-file
         ```
 
+    - using REST API
+    
+        ```bash
+        curl 'http://localhost:9393/streams/deployments/http-to-file' -i
+        ```
+        
 7. Test stream
 
     - generate request
@@ -112,12 +136,24 @@ Below we will build, deploy and create simple stream that writes HTTP requests t
         stream undeploy --name http-to-file
         ```
 
+    - using REST API
+    
+        ```bash
+        curl 'http://localhost:9393/streams/deployments/http-to-file' -i -X DELETE
+        ```
+
 9. Destroy stream
 
     - using shell
     
         ```bash
         stream destroy --name http-to-file
+        ```
+
+    - using REST API
+    
+        ```bash
+        curl 'http://localhost:9393/streams/definitions/http-to-file' -i -X DELETE
         ```
 
 10. Unregister Http source
