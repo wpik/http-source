@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.integration.http.support.DefaultHttpHeaderMapper;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.cors.CorsConfiguration;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
