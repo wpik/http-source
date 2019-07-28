@@ -43,7 +43,7 @@ public abstract class HttpSourceTests {
             assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
             Message<?> message = messageCollector.forChannel(channels.output()).poll(1, TimeUnit.SECONDS);
             assertEquals(json, message.getPayload());
-            assertEquals(MediaType.APPLICATION_JSON_UTF8, message.getHeaders().get(MessageHeaders.CONTENT_TYPE));
+            assertEquals(MediaType.APPLICATION_JSON, message.getHeaders().get(MessageHeaders.CONTENT_TYPE));
             assertFalse(message.getHeaders().containsKey("foo"));
         }
 

@@ -3,3 +3,6 @@ spring:
     streamapp:
       security:
         enabled: false
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: true
