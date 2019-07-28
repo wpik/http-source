@@ -45,4 +45,7 @@ public class HttpSourceProperties {
 
     @NestedConfigurationProperty
     private HttpSourceCorsProperties cors = new HttpSourceCorsProperties();
+
+    @NestedConfigurationProperty
+    private HttpSourcePojoProperties pojo = new HttpSourcePojoProperties();
 }
