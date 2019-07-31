@@ -48,4 +48,7 @@ public class HttpSourceProperties {
 
     @NestedConfigurationProperty
     private HttpSourcePojoProperties pojo = new HttpSourcePojoProperties();
+
+    @NestedConfigurationProperty
+    private HttpSourceJsonProperties json = new HttpSourceJsonProperties();
 }
