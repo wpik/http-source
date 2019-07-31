@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Person",
+  "description": "A person",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "firstname": {
+      "type": "string"
+    },
+    "lastname": {
+      "type": "string"
+    },
+    "age": {
+      "type": "number",
+      "minimum": 18,
+      "exclusiveMinimum": false
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "city": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "city"
+      ]
+    }
+  },
+  "required": [
+    "firstname",
+    "lastname",
+    "age",
+    "address"
+  ]
+}

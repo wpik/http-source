@@ -38,9 +38,24 @@ spring:
 
 ## Payload validation
 
+Service can validate payload against JSON Schema and POJO class.
+If both mechanisms are used, JSON Schema has precedence. 
+
+### Validation against JSON Schema
+
+To validate incoming payload against JSON Schema configure its location in the configuration. You can place it on 
+classpath or refer to the specific file:
+
+```yaml
+http:
+  json:
+    schema-location: <location e.g. classpath:/schema.json or file:///path/to/schema.json
+``` 
+
 ### Validation against POJO
 
-To validate incoming payload against POJO, add it to the classpath and put its full name into configuration.
+To validate incoming payload against POJO, add it to the classpath and put its full name into configuration. The 
+validation is performed using Jackson + JSR 380 Validation.
 
 ```yaml
 http:
@@ -106,6 +121,19 @@ spring:
               messageKeyExpression: headers['keyBytes']
 ```
 
+### Extracting key using JSON Path
+
+To extract key using JSON Path, define the JSON Path expression in the configuration:
+
+```yaml
+http:
+  json:
+    key-expression: <JSON Path expression, e.g. $.lastname>
+```
+
+
+
+### Extracting key using POJO class
 
 To extract key using POJO class, first you need to define the POJO class using `http.pojo.class-name` property.
 Then you define the SpEL expression used to calculate the key. The base for the SpEL expression is the request body 
@@ -114,6 +142,6 @@ converted to the POJO class.
 ```yaml
 http:
   pojo:
-    key-expression: <...>
+    key-expression: <SpEL expression, e.g. lastname>
 ```
 

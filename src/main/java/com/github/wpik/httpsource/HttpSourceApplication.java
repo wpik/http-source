@@ -1,5 +1,7 @@
 package com.github.wpik.httpsource;
 
+import com.github.wpik.httpsource.json.JsonPathKeyExtractorConfig;
+import com.github.wpik.httpsource.json.JsonSchemaValidatorConfig;
 import com.github.wpik.httpsource.pojo.PojoDeserializerConfig;
 import com.github.wpik.httpsource.pojo.PojoKeyExtractorConfig;
 import com.github.wpik.httpsource.pojo.PojoValidatorConfig;
@@ -37,8 +39,12 @@ public class HttpSourceApplication {
             @Qualifier(PojoValidatorConfig.POJO_VALIDATOR_BEAN_NAME)
                     GenericHandler<?> pojoValidator,
             @Qualifier(PojoKeyExtractorConfig.POJO_KEY_EXTRACTOR_BEAN_NAME)
-                    Consumer<HeaderEnricherSpec> pojoKeyExtractor
-    ) {
+                    Consumer<HeaderEnricherSpec> pojoKeyExtractor,
+            @Qualifier(JsonSchemaValidatorConfig.JSON_SCHEMA_VALIDATOR_BEAN_NAME)
+                    GenericHandler<?> jsonValidator,
+            @Qualifier(JsonPathKeyExtractorConfig.JSON_PATH_KEY_EXTRACTOR_BEAN_NAME)
+                    Consumer<HeaderEnricherSpec> jsonPathKeyExtractor
+            ) {
         return IntegrationFlows.from(
                 Http.inboundChannelAdapter(properties.getUriPath())
                         .requestMapping(mapping ->
@@ -53,8 +59,10 @@ public class HttpSourceApplication {
                                         .origin(properties.getCors().getAllowedOrigins())
                                         .allowedHeaders(properties.getCors().getAllowedHeaders())
                                         .allowCredentials(properties.getCors().getAllowCredentials())))
+                .handle(jsonValidator)
                 .enrichHeaders(pojoDeserializer)
                 .handle(pojoValidator)
+                .enrichHeaders(jsonPathKeyExtractor)
                 .enrichHeaders(pojoKeyExtractor)
                 .channel(Source.OUTPUT)
                 .get();
