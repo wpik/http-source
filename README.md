@@ -3,6 +3,9 @@
 Spring cloud streams HTTP source that validates payload against JSON schema or POJO and sends it to output stream.
 Partitioning is supported.
 
+## Spring Cloud Data Flow integration
+
+Check [this README](.dataflow/README.md) for details.
 
 ## Configuring topic name
 
@@ -66,7 +69,14 @@ http:
 The POJO can use `javax.validation` annotations. For samples check 
 [sample model in tests](/src/test/java/com/github/wpik/httpsource/model).
  
+**In order to reject payload with unknown properties, you need to tune Jackson deserialization properties as follows:** 
 
+```yaml
+spring:
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: true
+```
 
 ## Message partitioning
 
